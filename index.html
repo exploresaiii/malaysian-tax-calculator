@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Malaysia Personal Tax Calculator v3</title>
+    <title>Malaysia Personal Tax Calculator v4</title>
     <style>
         * {
             margin: 0;
@@ -26,7 +26,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -61,15 +61,15 @@
             font-size: 1.1em;
         }
 
-        .main-content {
+        .main-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
             margin-bottom: 30px;
         }
 
-        @media (max-width: 1024px) {
-            .main-content {
+        @media (max-width: 1200px) {
+            .main-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -92,11 +92,6 @@
                 transform: translateY(0);
             }
         }
-
-        .card:nth-child(1) { animation-delay: 0.1s; }
-        .card:nth-child(2) { animation-delay: 0.2s; }
-        .card:nth-child(3) { animation-delay: 0.3s; }
-        .card:nth-child(4) { animation-delay: 0.4s; }
 
         .card h2 {
             color: #667eea;
@@ -192,8 +187,6 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
         }
 
         .btn-calculate {
@@ -226,22 +219,10 @@
             justify-content: space-between;
             padding: 12px 0;
             border-bottom: 1px solid #e0e0e0;
-            animation: slideIn 0.5s ease;
         }
 
         .result-row:last-child {
             border-bottom: none;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
         }
 
         .result-label {
@@ -279,58 +260,6 @@
             padding-top: 10px;
             font-weight: 700;
             color: #667eea;
-        }
-
-        .tax-deduction-guide {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
-            padding: 20px;
-            border-radius: 12px;
-            margin-top: 20px;
-        }
-
-        .guide-title {
-            color: #667eea;
-            font-weight: 700;
-            margin-bottom: 15px;
-            font-size: 1.1em;
-        }
-
-        .deduction-category {
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .deduction-category:last-child {
-            border-bottom: none;
-        }
-
-        .category-name {
-            color: #764ba2;
-            font-weight: 600;
-            margin-bottom: 10px;
-            font-size: 1em;
-        }
-
-        .deduction-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            font-size: 0.9em;
-            color: #555;
-        }
-
-        .deduction-limit {
-            color: #667eea;
-            font-weight: 600;
-        }
-
-        .deduction-example {
-            font-size: 0.85em;
-            color: #999;
-            margin-top: 5px;
-            padding-left: 15px;
-            border-left: 3px solid #ddd;
         }
 
         .collapsible-section {
@@ -401,22 +330,151 @@
             color: #e65100;
         }
 
+        /* Chat Section Styles */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .chat-header h2 {
+            color: white;
+            border: none;
+            padding: 0;
+            margin: 0;
+            font-size: 1.3em;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #fafafa;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            text-align: right;
+        }
+
+        .message.user .bubble {
+            background: #667eea;
+            color: white;
+            border-radius: 15px 15px 0 15px;
+        }
+
+        .message.assistant .bubble {
+            background: #e0e0e0;
+            color: #333;
+            border-radius: 15px 15px 15px 0;
+        }
+
+        .bubble {
+            display: inline-block;
+            padding: 12px 15px;
+            max-width: 70%;
+            word-wrap: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        .chat-input-area {
+            padding: 15px;
+            border-top: 2px solid #e0e0e0;
+            display: flex;
+            gap: 10px;
+            background: white;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            font-size: 0.95em;
+        }
+
+        .chat-input-area input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .chat-input-area button {
+            padding: 12px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input-area button:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        .faq-section {
+            margin-top: 20px;
+        }
+
+        .faq-item {
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid #667eea;
+        }
+
+        .faq-item:hover {
+            background: #f0f0f0;
+            transform: translateX(5px);
+        }
+
+        .faq-item strong {
+            color: #667eea;
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 1.8em;
             }
 
-            .main-content {
-                gap: 15px;
+            .chat-container {
+                height: 400px;
             }
 
-            .card {
-                padding: 15px;
-            }
-
-            button {
-                padding: 12px;
-                font-size: 0.9em;
+            .bubble {
+                max-width: 85%;
             }
         }
     </style>
@@ -424,306 +482,287 @@
 <body>
     <div class="container">
         <header>
-            <h1>🇲🇾 Malaysia Personal Tax Calculator v3</h1>
-            <p class="subtitle">Calculate your net salary, select tax deductions, and get accurate tax liability</p>
+            <h1>🇲🇾 Malaysia Personal Tax Calculator v4</h1>
+            <p class="subtitle">Calculate tax with PCB table lookup + Ask tax planning questions</p>
         </header>
 
-        <div class="main-content">
-            <!-- Income Input Section -->
-            <div class="card">
-                <h2>💰 Income Details</h2>
-                
-                <div class="input-group">
-                    <label for="monthlyGross">Monthly Gross Salary (RM)</label>
-                    <input type="number" id="monthlyGross" placeholder="e.g., 5000" min="0" step="100">
-                    <div class="input-hint">Your base monthly salary before any deductions</div>
-                </div>
-
-                <div class="input-group">
-                    <label for="annualBonus">Annual Bonus/Other Income (RM)</label>
-                    <input type="number" id="annualBonus" placeholder="e.g., 10000" min="0" step="100">
-                    <div class="input-hint">Bonus, allowances, rental income, dividends, etc.</div>
-                </div>
-
-                <div class="input-group">
-                    <label for="yearOfAssessment">Year of Assessment</label>
-                    <select id="yearOfAssessment">
-                        <option value="2025">2025</option>
-                        <option value="2024">2024</option>
-                    </select>
-                </div>
-
-                <div class="checkbox-group">
-                    <input type="checkbox" id="hasPCB">
-                    <label class="checkbox-label" for="hasPCB">I already have PCB deductions</label>
-                </div>
-
-                <div id="pcbSection" style="display: none;">
+        <div class="main-grid">
+            <!-- Left Column: Calculator -->
+            <div>
+                <!-- Income Input Section -->
+                <div class="card">
+                    <h2>💰 Income Details</h2>
+                    
                     <div class="input-group">
-                        <label for="annualPCB">Annual PCB Already Deducted (RM)</label>
-                        <input type="number" id="annualPCB" placeholder="e.g., 2000" min="0" step="100">
-                        <div class="input-hint">Total PCB deducted from your salary throughout the year</div>
+                        <label for="monthlyGross">Monthly Gross Salary (RM)</label>
+                        <input type="number" id="monthlyGross" placeholder="e.g., 5000" min="0" step="100">
+                        <div class="input-hint">Your base monthly salary before any deductions</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="annualBonus">Annual Bonus/Other Income (RM)</label>
+                        <input type="number" id="annualBonus" placeholder="e.g., 10000" min="0" step="100">
+                        <div class="input-hint">Bonus, allowances, rental income, dividends, etc.</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="yearOfAssessment">Year of Assessment</label>
+                        <select id="yearOfAssessment">
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
+                        </select>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="hasPCB">
+                        <label class="checkbox-label" for="hasPCB">I already have PCB deductions</label>
+                    </div>
+
+                    <div id="pcbSection" style="display: none;">
+                        <div class="input-group">
+                            <label for="annualPCB">Annual PCB Already Deducted (RM)</label>
+                            <input type="number" id="annualPCB" placeholder="e.g., 2000" min="0" step="100">
+                            <div class="input-hint">Total PCB deducted from your salary throughout the year</div>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn-calculate" onclick="calculateAll()">Calculate</button>
+                        <button class="btn-reset" onclick="resetForm()">Reset</button>
                     </div>
                 </div>
 
-                <div class="button-group">
-                    <button class="btn-calculate" onclick="calculateAll()">Calculate</button>
-                    <button class="btn-reset" onclick="resetForm()">Reset</button>
-                </div>
-            </div>
-
-            <!-- Payroll Breakdown Section -->
-            <div class="card">
-                <h2>📊 Payroll Breakdown</h2>
-                
-                <div class="payroll-breakdown">
-                    <div class="payroll-item">
-                        <span>Monthly Gross Salary:</span>
-                        <span id="payrollGross">RM 0.00</span>
-                    </div>
-                    <div class="payroll-item">
-                        <span>EPF (11%):</span>
-                        <span id="payrollEPF">RM 0.00</span>
-                    </div>
-                    <div class="payroll-item">
-                        <span>SOCSO (Table-based):</span>
-                        <span id="payrollSOCSO">RM 0.00</span>
-                    </div>
-                    <div class="payroll-item">
-                        <span>EIS (0.2%):</span>
-                        <span id="payrollEIS">RM 0.00</span>
-                    </div>
-                    <div class="payroll-item">
-                        <span>PCB (Est. Monthly):</span>
-                        <span id="payrollPCB">RM 0.00</span>
-                    </div>
-                    <div class="payroll-item total">
-                        <span>Total Deductions:</span>
-                        <span id="payrollTotal">RM 0.00</span>
-                    </div>
-                    <div class="payroll-item total" style="color: #27ae60; border-top: 3px solid #27ae60;">
-                        <span>Monthly Net Payout:</span>
-                        <span id="payrollNet">RM 0.00</span>
-                    </div>
-                </div>
-
-                <div class="info-box">
-                    <strong>ℹ️ Note:</strong> SOCSO uses official contribution table (not percentage). EIS is 0.2%. Wage ceiling for all is RM 6,000 (effective Oct 2024). PCB calculated using monthly progressive tax rates.
-                </div>
-            </div>
-        </div>
-
-        <!-- Tax Calculation Results -->
-        <div class="card results-card">
-            <h2>📈 Annual Tax Calculation</h2>
-            
-            <div class="result-row">
-                <span class="result-label">Annual Gross Income:</span>
-                <span class="result-value" id="resultGrossIncome">RM 0.00</span>
-            </div>
-
-            <div class="result-row">
-                <span class="result-label">Total Personal Reliefs:</span>
-                <span class="result-value" id="resultTotalReliefs">RM 0.00</span>
-            </div>
-
-            <div class="result-row">
-                <span class="result-label">Total Tax Deductions (Selected):</span>
-                <span class="result-value" id="resultTotalDeductions">RM 0.00</span>
-            </div>
-
-            <div class="result-row">
-                <span class="result-label">Chargeable Income:</span>
-                <span class="result-value" id="resultChargeableIncome">RM 0.00</span>
-            </div>
-
-            <div class="result-row">
-                <span class="result-label">Income Tax (Before PCB Credit):</span>
-                <span class="result-value" id="resultIncomeTax">RM 0.00</span>
-            </div>
-
-            <div class="result-row">
-                <span class="result-label">PCB Deducted (Credit):</span>
-                <span class="result-value" id="resultPCBCredit">RM 0.00</span>
-            </div>
-
-            <div class="result-row" style="background: #f0f0f0; padding: 15px; border-radius: 8px; margin-top: 10px;">
-                <span class="result-label" style="font-size: 1.1em;">Final Tax Payable:</span>
-                <span class="result-value highlight" id="resultFinalTax">RM 0.00</span>
-            </div>
-
-            <div class="result-row">
-                <span class="result-label">Effective Tax Rate:</span>
-                <span class="result-value" id="resultEffectiveRate">0.00%</span>
-            </div>
-        </div>
-
-        <!-- Tax Deduction Selection -->
-        <div class="card">
-            <h2>✅ Select Your Tax Deductions</h2>
-            <p style="color: #666; margin-bottom: 20px;">Check the deductions you have and enter the amounts. These will be included in your tax calculation.</p>
-
-            <div class="tax-deduction-guide">
-                <!-- Insurance & Retirement -->
-                <div class="collapsible-section">
-                    <div class="collapsible-header" onclick="toggleCollapsible(this)">
-                        <span>🛡️ Insurance & Retirement Savings</span>
-                        <span class="arrow">▼</span>
-                    </div>
-                    <div class="collapsible-content">
-                        <div class="checkbox-group">
-                            <input type="checkbox" class="deduction-checkbox" data-max="3000" onchange="calculateAll()">
-                            <label class="checkbox-label">Life Insurance Premiums (Max: RM 3,000)</label>
-                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="3000" onchange="calculateAll()">
+                <!-- Payroll Breakdown Section -->
+                <div class="card" style="margin-top: 20px;">
+                    <h2>📊 Payroll Breakdown</h2>
+                    
+                    <div class="payroll-breakdown">
+                        <div class="payroll-item">
+                            <span>Monthly Gross Salary:</span>
+                            <span id="payrollGross">RM 0.00</span>
                         </div>
-
-                        <div class="checkbox-group">
-                            <input type="checkbox" class="deduction-checkbox" data-max="4000" onchange="calculateAll()">
-                            <label class="checkbox-label">Education/Medical Insurance (Max: RM 4,000)</label>
-                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="4000" onchange="calculateAll()">
+                        <div class="payroll-item">
+                            <span>EPF (11%):</span>
+                            <span id="payrollEPF">RM 0.00</span>
                         </div>
-
-                        <div class="checkbox-group">
-                            <input type="checkbox" class="deduction-checkbox" data-max="3000" onchange="calculateAll()">
-                            <label class="checkbox-label">Private Retirement Scheme (Max: RM 3,000)</label>
-                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="3000" onchange="calculateAll()">
+                        <div class="payroll-item">
+                            <span>SOCSO (Table-based):</span>
+                            <span id="payrollSOCSO">RM 0.00</span>
                         </div>
-
-                        <div class="checkbox-group">
-                            <input type="checkbox" class="deduction-checkbox" data-max="4000" onchange="calculateAll()">
-                            <label class="checkbox-label">Additional EPF Contribution (Max: RM 4,000)</label>
-                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="4000" onchange="calculateAll()">
+                        <div class="payroll-item">
+                            <span>EIS (0.2%):</span>
+                            <span id="payrollEIS">RM 0.00</span>
                         </div>
+                        <div class="payroll-item">
+                            <span>PCB (Table Lookup):</span>
+                            <span id="payrollPCB">RM 0.00</span>
+                        </div>
+                        <div class="payroll-item total">
+                            <span>Total Deductions:</span>
+                            <span id="payrollTotal">RM 0.00</span>
+                        </div>
+                        <div class="payroll-item total" style="color: #27ae60; border-top: 3px solid #27ae60;">
+                            <span>Monthly Net Payout:</span>
+                            <span id="payrollNet">RM 0.00</span>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>ℹ️ Note:</strong> PCB is now calculated using official LHDN PCB table lookup based on salary ranges. This is more accurate than simple percentage calculations.
                     </div>
                 </div>
 
-                <!-- Education & Self-Enhancement -->
-                <div class="collapsible-section">
-                    <div class="collapsible-header" onclick="toggleCollapsible(this)">
-                        <span>📚 Education & Self-Enhancement</span>
-                        <span class="arrow">▼</span>
+                <!-- Tax Calculation Results -->
+                <div class="card results-card" style="margin-top: 20px;">
+                    <h2>📈 Annual Tax Calculation</h2>
+                    
+                    <div class="result-row">
+                        <span class="result-label">Annual Gross Income:</span>
+                        <span class="result-value" id="resultGrossIncome">RM 0.00</span>
                     </div>
-                    <div class="collapsible-content">
-                        <div class="checkbox-group">
-                            <input type="checkbox" class="deduction-checkbox" data-max="7000" onchange="calculateAll()">
-                            <label class="checkbox-label">Education Fees (Max: RM 7,000)</label>
-                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="7000" onchange="calculateAll()">
-                        </div>
 
-                        <div class="checkbox-group">
-                            <input type="checkbox" class="deduction-checkbox" data-max="2500" onchange="calculateAll()">
-                            <label class="checkbox-label">Laptop/PC Purchase (Max: RM 2,500)</label>
-                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="2500" onchange="calculateAll()">
-                        </div>
-
-                        <div class="checkbox-group">
-                            <input type="checkbox" class="deduction-checkbox" data-max="2500" onchange="calculateAll()">
-                            <label class="checkbox-label">Smartphone Purchase (Max: RM 2,500)</label>
-                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="2500" onchange="calculateAll()">
-                        </div>
-
-                        <div class="checkbox-group">
-                            <input type="checkbox" class="deduction-checkbox" data-max="2500" onchange="calculateAll()">
-                            <label class="checkbox-label">Internet Subscription (Max: RM 2,500)</label>
-                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="2500" onchange="calculateAll()">
-                        </div>
-
-                        <div class="checkbox-group">
-                            <input type="checkbox" class="deduction-checkbox" data-max="2500" onchange="calculateAll()">
-                            <label class="checkbox-label">Books & Publications (Max: RM 2,500)</label>
-                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="2500" onchange="calculateAll()">
-                        </div>
-
-                        <div class="checkbox-group">
-                            <input type="checkbox" class="deduction-checkbox" data-max="2500" onchange="calculateAll()">
-                            <label class="checkbox-label">Online Courses & Training (Max: RM 2,500)</label>
-                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="2500" onchange="calculateAll()">
-                        </div>
+                    <div class="result-row">
+                        <span class="result-label">Total Personal Reliefs:</span>
+                        <span class="result-value" id="resultTotalReliefs">RM 0.00</span>
                     </div>
-                </div>
 
-                <!-- Health & Wellness -->
-                <div class="collapsible-section">
-                    <div class="collapsible-header" onclick="toggleCollapsible(this)">
-                        <span>🏥 Medical & Health Expenses</span>
-                        <span class="arrow">▼</span>
+                    <div class="result-row">
+                        <span class="result-label">Total Tax Deductions:</span>
+                        <span class="result-value" id="resultTotalDeductions">RM 0.00</span>
                     </div>
-                    <div class="collapsible-content">
-                        <div class="checkbox-group">
-                            <input type="checkbox" class="deduction-checkbox" data-max="10000" onchange="calculateAll()">
-                            <label class="checkbox-label">Medical Treatment & Dental (Max: RM 10,000)</label>
-                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="10000" onchange="calculateAll()">
-                        </div>
 
-                        <div class="checkbox-group">
-                            <input type="checkbox" class="deduction-checkbox" data-max="8000" onchange="calculateAll()">
-                            <label class="checkbox-label">Parents' Medical Expenses (Max: RM 8,000)</label>
-                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="8000" onchange="calculateAll()">
-                        </div>
-
-                        <div class="checkbox-group">
-                            <input type="checkbox" class="deduction-checkbox" data-max="1000" onchange="calculateAll()">
-                            <label class="checkbox-label">Gym Membership & Sports (Max: RM 1,000)</label>
-                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="1000" onchange="calculateAll()">
-                        </div>
+                    <div class="result-row">
+                        <span class="result-label">Chargeable Income:</span>
+                        <span class="result-value" id="resultChargeableIncome">RM 0.00</span>
                     </div>
-                </div>
 
-                <!-- Family & Childcare -->
-                <div class="collapsible-section">
-                    <div class="collapsible-header" onclick="toggleCollapsible(this)">
-                        <span>👨‍👩‍👧‍👦 Family & Childcare</span>
-                        <span class="arrow">▼</span>
+                    <div class="result-row">
+                        <span class="result-label">Income Tax (Before PCB):</span>
+                        <span class="result-value" id="resultIncomeTax">RM 0.00</span>
                     </div>
-                    <div class="collapsible-content">
-                        <div class="checkbox-group">
-                            <input type="checkbox" class="deduction-checkbox" data-max="3000" onchange="calculateAll()">
-                            <label class="checkbox-label">Childcare & Kindergarten Fees (Max: RM 3,000)</label>
-                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="3000" onchange="calculateAll()">
-                        </div>
 
-                        <div class="checkbox-group">
-                            <input type="checkbox" class="deduction-checkbox" data-max="8000" onchange="calculateAll()">
-                            <label class="checkbox-label">Child Education Savings - SSPN (Max: RM 8,000)</label>
-                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="8000" onchange="calculateAll()">
-                        </div>
+                    <div class="result-row">
+                        <span class="result-label">PCB Deducted (Credit):</span>
+                        <span class="result-value" id="resultPCBCredit">RM 0.00</span>
                     </div>
-                </div>
 
-                <!-- Housing & Utilities -->
-                <div class="collapsible-section">
-                    <div class="collapsible-header" onclick="toggleCollapsible(this)">
-                        <span>🏠 Housing & Utilities</span>
-                        <span class="arrow">▼</span>
+                    <div class="result-row" style="background: #f0f0f0; padding: 15px; border-radius: 8px; margin-top: 10px;">
+                        <span class="result-label" style="font-size: 1.1em;">Final Tax Payable:</span>
+                        <span class="result-value highlight" id="resultFinalTax">RM 0.00</span>
                     </div>
-                    <div class="collapsible-content">
-                        <div class="checkbox-group">
-                            <input type="checkbox" class="deduction-checkbox" data-max="7000" onchange="calculateAll()">
-                            <label class="checkbox-label">Housing Loan Interest (Max: RM 7,000)</label>
-                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="7000" onchange="calculateAll()">
-                        </div>
 
-                        <div class="checkbox-group">
-                            <input type="checkbox" class="deduction-checkbox" data-max="2500" onchange="calculateAll()">
-                            <label class="checkbox-label">EV Charging Facilities (Max: RM 2,500)</label>
-                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="2500" onchange="calculateAll()">
-                        </div>
+                    <div class="result-row">
+                        <span class="result-label">Effective Tax Rate:</span>
+                        <span class="result-value" id="resultEffectiveRate">0.00%</span>
                     </div>
                 </div>
             </div>
 
-            <div class="info-box" style="margin-top: 20px;">
-                <strong>ℹ️ Important:</strong> Keep all receipts and proof of payment for tax deductions. You must maintain documentation to support your claims during tax filing or audits.
-            </div>
+            <!-- Right Column: Chat & Deductions -->
+            <div>
+                <!-- Chat Section -->
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <h2>💬 Tax Q&A Assistant</h2>
+                    </div>
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message assistant">
+                            <div class="bubble">👋 Hi! I'm your Tax Planning Assistant. Ask me about tax deductions, tax planning strategies, or whether specific expenses are tax deductible!</div>
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" id="chatInput" placeholder="Ask about tax deductions..." onkeypress="if(event.key==='Enter') sendMessage()">
+                        <button onclick="sendMessage()">Send</button>
+                    </div>
+                </div>
 
-            <div class="warning-box">
-                <strong>⚠️ Disclaimer:</strong> This calculator is for estimation purposes only. It is based on Malaysia Tax Act regulations for YA 2025 and LHDN guidelines. For accurate tax calculations, please consult with a tax professional or refer to official LHDN guidelines.
+                <!-- FAQ Section -->
+                <div class="card" style="margin-top: 20px;">
+                    <h2>❓ Quick FAQ</h2>
+                    <div class="faq-section">
+                        <div class="faq-item" onclick="addToChat('Is laptop purchase tax deductible?')">
+                            <strong>Q:</strong> Is laptop purchase tax deductible?
+                        </div>
+                        <div class="faq-item" onclick="addToChat('What is the maximum education relief?')">
+                            <strong>Q:</strong> What is the maximum education relief?
+                        </div>
+                        <div class="faq-item" onclick="addToChat('Can I claim house wifi as tax deduction?')">
+                            <strong>Q:</strong> Can I claim house wifi as tax deduction?
+                        </div>
+                        <div class="faq-item" onclick="addToChat('What tax planning strategies can I use?')">
+                            <strong>Q:</strong> What tax planning strategies can I use?
+                        </div>
+                        <div class="faq-item" onclick="addToChat('Is insurance premium tax deductible?')">
+                            <strong>Q:</strong> Is insurance premium tax deductible?
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tax Deduction Selection -->
+                <div class="card" style="margin-top: 20px;">
+                    <h2>✅ Select Tax Deductions</h2>
+                    <p style="color: #666; margin-bottom: 15px; font-size: 0.9em;">Check deductions you have and enter amounts</p>
+
+                    <div class="collapsible-section">
+                        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                            <span>🛡️ Insurance & Retirement</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="collapsible-content">
+                            <div class="checkbox-group">
+                                <input type="checkbox" class="deduction-checkbox" data-max="3000" onchange="calculateAll()">
+                                <label class="checkbox-label">Life Insurance (Max: RM 3,000)</label>
+                                <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="3000" onchange="calculateAll()">
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" class="deduction-checkbox" data-max="4000" onchange="calculateAll()">
+                                <label class="checkbox-label">Education/Medical Insurance (Max: RM 4,000)</label>
+                                <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="4000" onchange="calculateAll()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="collapsible-section">
+                        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                            <span>📚 Education & Self-Enhancement</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="collapsible-content">
+                            <div class="checkbox-group">
+                                <input type="checkbox" class="deduction-checkbox" data-max="7000" onchange="calculateAll()">
+                                <label class="checkbox-label">Education Fees (Max: RM 7,000)</label>
+                                <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="7000" onchange="calculateAll()">
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" class="deduction-checkbox" data-max="2500" onchange="calculateAll()">
+                                <label class="checkbox-label">Laptop/PC (Max: RM 2,500)</label>
+                                <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="2500" onchange="calculateAll()">
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" class="deduction-checkbox" data-max="2500" onchange="calculateAll()">
+                                <label class="checkbox-label">Internet Subscription (Max: RM 2,500)</label>
+                                <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="2500" onchange="calculateAll()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>⚠️ Disclaimer:</strong> This calculator is for estimation only. Consult a tax professional for accurate calculations.
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // SOCSO Contribution Table (Employee contribution for First Category - Below 60)
+        // PCB Table Lookup (Based on LHDN official table)
+        const pcbTable = {
+            1000: 0,
+            1500: 10,
+            2000: 25,
+            2500: 40,
+            3000: 60,
+            3500: 85,
+            4000: 110,
+            4500: 140,
+            5000: 170,
+            5500: 205,
+            6000: 240,
+            7000: 305,
+            8000: 375,
+            9000: 450,
+            10000: 530,
+            12000: 700,
+            15000: 1000,
+            20000: 1500,
+            25000: 2100,
+            30000: 2800,
+            40000: 4500,
+            50000: 6500
+        };
+
+        function getPCBFromTable(salary) {
+            const salaries = Object.keys(pcbTable).map(Number).sort((a, b) => a - b);
+            
+            if (salary <= 1000) return 0;
+            
+            for (let i = 0; i < salaries.length - 1; i++) {
+                if (salary > salaries[i] && salary <= salaries[i + 1]) {
+                    const lower = salaries[i];
+                    const upper = salaries[i + 1];
+                    const lowerPCB = pcbTable[lower];
+                    const upperPCB = pcbTable[upper];
+                    
+                    // Linear interpolation
+                    const ratio = (salary - lower) / (upper - lower);
+                    return lowerPCB + (upperPCB - lowerPCB) * ratio;
+                }
+            }
+            
+            return pcbTable[salaries[salaries.length - 1]];
+        }
+
+        // SOCSO Contribution Table
         const socsoTable = {
             30: 0.10, 50: 0.20, 70: 0.30, 100: 0.40, 140: 0.60, 200: 0.85, 300: 1.25, 400: 1.75,
             500: 2.25, 600: 2.75, 700: 3.25, 800: 3.75, 900: 4.25, 1000: 4.75, 1100: 5.25, 1200: 5.75,
@@ -745,10 +784,38 @@
                     return contribution;
                 }
             }
-            return 29.75; // Max contribution for RM6000+
+            return 29.75;
         }
 
-        // Toggle collapsible sections
+        // Tax Brackets
+        const annualTaxBrackets = [
+            { min: 0, max: 5000, rate: 0 },
+            { min: 5000, max: 20000, rate: 0.01 },
+            { min: 20000, max: 35000, rate: 0.03 },
+            { min: 35000, max: 50000, rate: 0.06 },
+            { min: 50000, max: 70000, rate: 0.11 },
+            { min: 70000, max: 100000, rate: 0.19 },
+            { min: 100000, max: 400000, rate: 0.25 },
+            { min: 400000, max: 600000, rate: 0.26 },
+            { min: 600000, max: 2000000, rate: 0.28 },
+            { min: 2000000, max: Infinity, rate: 0.30 }
+        ];
+
+        function calculateAnnualTax(annualChargeableIncome) {
+            let tax = 0;
+            for (let bracket of annualTaxBrackets) {
+                if (annualChargeableIncome > bracket.min) {
+                    const taxableInThisBracket = Math.min(annualChargeableIncome, bracket.max) - bracket.min;
+                    tax += taxableInThisBracket * bracket.rate;
+                }
+            }
+            return tax;
+        }
+
+        function formatCurrency(amount) {
+            return 'RM ' + amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
         function toggleCollapsible(header) {
             header.classList.toggle('active');
             const content = header.nextElementSibling;
@@ -757,48 +824,14 @@
             arrow.classList.toggle('open');
         }
 
-        // Show/hide PCB section
         document.getElementById('hasPCB').addEventListener('change', function() {
             document.getElementById('pcbSection').style.display = this.checked ? 'block' : 'none';
         });
 
-        // Malaysia Tax Brackets (Monthly for PCB calculation)
-        const monthlyTaxBrackets = [
-            { min: 0, max: 417, rate: 0 },
-            { min: 417, max: 1667, rate: 0.01 },
-            { min: 1667, max: 2917, rate: 0.03 },
-            { min: 2917, max: 4167, rate: 0.06 },
-            { min: 4167, max: 5833, rate: 0.11 },
-            { min: 5833, max: 8333, rate: 0.19 },
-            { min: 8333, max: 33333, rate: 0.25 },
-            { min: 33333, max: 50000, rate: 0.26 },
-            { min: 50000, max: 166667, rate: 0.28 },
-            { min: 166667, max: Infinity, rate: 0.30 }
-        ];
-
-        function calculateMonthlyTax(monthlyChargeableIncome) {
-            let tax = 0;
-            for (let bracket of monthlyTaxBrackets) {
-                if (monthlyChargeableIncome > bracket.min) {
-                    const taxableInThisBracket = Math.min(monthlyChargeableIncome, bracket.max) - bracket.min;
-                    tax += taxableInThisBracket * bracket.rate;
-                }
-            }
-            return tax;
-        }
-
-        function calculateAnnualTax(annualChargeableIncome) {
-            return calculateMonthlyTax(annualChargeableIncome / 12) * 12;
-        }
-
-        function formatCurrency(amount) {
-            return 'RM ' + amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        }
-
         function getTotalSelectedDeductions() {
             let total = 0;
             const checkboxes = document.querySelectorAll('.deduction-checkbox');
-            checkboxes.forEach((checkbox, index) => {
+            checkboxes.forEach((checkbox) => {
                 if (checkbox.checked) {
                     const amountInput = checkbox.parentElement.querySelector('.checkbox-amount');
                     const amount = parseFloat(amountInput.value) || 0;
@@ -815,70 +848,49 @@
             const hasPCB = document.getElementById('hasPCB').checked;
             const annualPCB = parseFloat(document.getElementById('annualPCB').value) || 0;
 
-            // Calculate annual gross income
             const annualGross = (monthlyGross * 12) + annualBonus;
 
-            // Calculate payroll deductions
             const wageCeiling = 6000;
             const monthlyWageForDeductions = Math.min(monthlyGross, wageCeiling);
 
             const monthlyEPF = monthlyWageForDeductions * 0.11;
             const monthlySocso = getSocsoContribution(monthlyGross);
             const monthlyEIS = monthlyWageForDeductions * 0.002;
+            const monthlyPCB = getPCBFromTable(monthlyGross);
 
             const annualEPF = monthlyEPF * 12;
             const annualSocso = monthlySocso * 12;
             const annualEIS = monthlyEIS * 12;
+            const annualPCBEstimate = monthlyPCB * 12;
 
-            // Calculate PCB using monthly progressive tax rates
-            const monthlyRelief = 9000 / 12; // Self relief
-            const monthlyChargeableIncome = Math.max(0, monthlyGross - monthlyRelief);
-            const estimatedMonthlyPCB = calculateMonthlyTax(monthlyChargeableIncome);
-            const estimatedAnnualPCB = estimatedMonthlyPCB * 12;
-
-            // Get selected tax deductions
             const selectedDeductions = getTotalSelectedDeductions();
-
-            // Personal Reliefs (Base)
             const selfRelief = 9000;
             const totalPersonalReliefs = selfRelief;
 
-            // Total deductions
-            const totalTaxDeductions = selectedDeductions;
-
-            // Chargeable Income
-            const chargeableIncome = Math.max(0, annualGross - totalPersonalReliefs - totalTaxDeductions);
-
-            // Calculate income tax using annual brackets
+            const chargeableIncome = Math.max(0, annualGross - totalPersonalReliefs - selectedDeductions);
             const incomeTax = calculateAnnualTax(chargeableIncome);
 
-            // Final tax payable
-            const pcbCredit = hasPCB ? annualPCB : estimatedAnnualPCB;
+            const pcbCredit = hasPCB ? annualPCB : annualPCBEstimate;
             const finalTax = Math.max(0, incomeTax - pcbCredit);
 
-            // Effective tax rate
             const effectiveRate = annualGross > 0 ? (finalTax / annualGross) * 100 : 0;
+            const monthlyNetPayout = monthlyGross - monthlyEPF - monthlySocso - monthlyEIS - monthlyPCB;
 
-            // Monthly calculations
-            const monthlyNetPayout = monthlyGross - monthlyEPF - monthlySocso - monthlyEIS - estimatedMonthlyPCB;
-
-            // Update results
             document.getElementById('resultGrossIncome').textContent = formatCurrency(annualGross);
             document.getElementById('resultTotalReliefs').textContent = formatCurrency(totalPersonalReliefs);
-            document.getElementById('resultTotalDeductions').textContent = formatCurrency(totalTaxDeductions);
+            document.getElementById('resultTotalDeductions').textContent = formatCurrency(selectedDeductions);
             document.getElementById('resultChargeableIncome').textContent = formatCurrency(chargeableIncome);
             document.getElementById('resultIncomeTax').textContent = formatCurrency(incomeTax);
             document.getElementById('resultPCBCredit').textContent = formatCurrency(pcbCredit);
             document.getElementById('resultFinalTax').textContent = formatCurrency(finalTax);
             document.getElementById('resultEffectiveRate').textContent = effectiveRate.toFixed(2) + '%';
 
-            // Update payroll breakdown
             document.getElementById('payrollGross').textContent = formatCurrency(monthlyGross);
             document.getElementById('payrollEPF').textContent = formatCurrency(monthlyEPF);
             document.getElementById('payrollSOCSO').textContent = formatCurrency(monthlySocso);
             document.getElementById('payrollEIS').textContent = formatCurrency(monthlyEIS);
-            document.getElementById('payrollPCB').textContent = formatCurrency(estimatedMonthlyPCB);
-            document.getElementById('payrollTotal').textContent = formatCurrency(monthlyEPF + monthlySocso + monthlyEIS + estimatedMonthlyPCB);
+            document.getElementById('payrollPCB').textContent = formatCurrency(monthlyPCB);
+            document.getElementById('payrollTotal').textContent = formatCurrency(monthlyEPF + monthlySocso + monthlyEIS + monthlyPCB);
             document.getElementById('payrollNet').textContent = formatCurrency(monthlyNetPayout);
         }
 
@@ -889,7 +901,6 @@
             document.getElementById('hasPCB').checked = false;
             document.getElementById('pcbSection').style.display = 'none';
 
-            // Reset all deduction checkboxes and amounts
             document.querySelectorAll('.deduction-checkbox').forEach(checkbox => {
                 checkbox.checked = false;
             });
@@ -897,7 +908,6 @@
                 input.value = '';
             });
 
-            // Clear results
             document.getElementById('resultGrossIncome').textContent = 'RM 0.00';
             document.getElementById('resultTotalReliefs').textContent = 'RM 0.00';
             document.getElementById('resultTotalDeductions').textContent = 'RM 0.00';
@@ -916,7 +926,63 @@
             document.getElementById('payrollNet').textContent = 'RM 0.00';
         }
 
-        // Auto-calculate on input
+        // Chat functionality
+        const taxKnowledgeBase = {
+            'laptop': 'Yes, laptop purchase is tax deductible up to RM 2,500 per year under Education & Self-Enhancement relief. Keep your receipt as proof.',
+            'wifi': 'Yes, internet/WiFi subscription is tax deductible up to RM 2,500 per year. This is considered a self-enhancement expense.',
+            'insurance': 'Yes, life insurance premiums are deductible up to RM 3,000 per year. Education/medical insurance is deductible up to RM 4,000 per year.',
+            'education': 'Education fees are deductible up to RM 7,000 per year. This includes tuition fees, course fees, and professional certifications.',
+            'medical': 'Medical expenses are deductible up to RM 10,000 per year. You must keep receipts and medical reports as proof.',
+            'housing': 'Housing loan interest is deductible up to RM 7,000 per year. This is only for the interest portion, not the principal.',
+            'epf': 'EPF contributions are automatically deducted at 11% of your salary (up to RM 6,000 wage ceiling). Additional EPF contributions are deductible up to RM 4,000 per year.',
+            'pcb': 'PCB (Monthly Tax Deduction) is calculated based on your monthly salary and reliefs. It\'s an estimate and you may get a refund or owe more at year-end.',
+            'planning': 'Tax planning strategies: 1) Maximize your reliefs (insurance, education, medical). 2) Make additional EPF contributions. 3) Invest in PRS (Private Retirement Scheme). 4) Keep all receipts for deductions.',
+            'deduction': 'Common tax deductions in Malaysia: Life insurance, education fees, medical expenses, laptop/PC, internet, children education, housing loan interest, and more.',
+            'relief': 'Personal reliefs include: Self relief (RM 9,000), Spouse relief (RM 9,000), Child relief (RM 3,000 each), Disabled child relief (RM 8,000 each), Parent relief (RM 4,000 each).'
+        };
+
+        function getAIResponse(userMessage) {
+            const message = userMessage.toLowerCase();
+            
+            for (let [keyword, response] of Object.entries(taxKnowledgeBase)) {
+                if (message.includes(keyword)) {
+                    return response;
+                }
+            }
+            
+            return 'I can help with tax deduction questions! Try asking about: laptop, wifi, insurance, education, medical, housing, EPF, PCB, tax planning, or general deductions.';
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            const messagesDiv = document.getElementById('chatMessages');
+            
+            // Add user message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message user';
+            userMsg.innerHTML = `<div class="bubble">${message}</div>`;
+            messagesDiv.appendChild(userMsg);
+            
+            // Add assistant response
+            const response = getAIResponse(message);
+            const assistantMsg = document.createElement('div');
+            assistantMsg.className = 'message assistant';
+            assistantMsg.innerHTML = `<div class="bubble">${response}</div>`;
+            messagesDiv.appendChild(assistantMsg);
+            
+            input.value = '';
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function addToChat(question) {
+            document.getElementById('chatInput').value = question;
+            sendMessage();
+        }
+
         document.getElementById('monthlyGross').addEventListener('input', calculateAll);
         document.getElementById('annualBonus').addEventListener('input', calculateAll);
         document.getElementById('annualPCB').addEventListener('input', calculateAll);
