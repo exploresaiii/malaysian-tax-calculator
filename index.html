@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Malaysia Personal Tax Calculator v2</title>
+    <title>Malaysia Personal Tax Calculator v3</title>
     <style>
         * {
             margin: 0;
@@ -148,6 +148,9 @@
             display: flex;
             align-items: center;
             margin-bottom: 15px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
         }
 
         input[type="checkbox"] {
@@ -162,6 +165,16 @@
             margin: 0;
             cursor: pointer;
             user-select: none;
+            flex: 1;
+        }
+
+        .checkbox-amount {
+            width: 100px;
+            margin-left: 10px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9em;
         }
 
         .button-group {
@@ -191,10 +204,6 @@
         .btn-calculate:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-calculate:active {
-            transform: translateY(-1px);
         }
 
         .btn-reset {
@@ -368,7 +377,7 @@
         }
 
         .collapsible-content.open {
-            max-height: 500px;
+            max-height: 800px;
             padding: 15px;
         }
 
@@ -390,21 +399,6 @@
             margin-top: 15px;
             font-size: 0.9em;
             color: #e65100;
-        }
-
-        .number-counter {
-            animation: countUp 1s ease-out;
-        }
-
-        @keyframes countUp {
-            from {
-                opacity: 0.5;
-                transform: scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
         }
 
         @media (max-width: 768px) {
@@ -430,8 +424,8 @@
 <body>
     <div class="container">
         <header>
-            <h1>🇲🇾 Malaysia Personal Tax Calculator v2</h1>
-            <p class="subtitle">Calculate your net salary, tax deductions, and income tax liability</p>
+            <h1>🇲🇾 Malaysia Personal Tax Calculator v3</h1>
+            <p class="subtitle">Calculate your net salary, select tax deductions, and get accurate tax liability</p>
         </header>
 
         <div class="main-content">
@@ -492,7 +486,7 @@
                         <span id="payrollEPF">RM 0.00</span>
                     </div>
                     <div class="payroll-item">
-                        <span>SOCSO (0.5%):</span>
+                        <span>SOCSO (Table-based):</span>
                         <span id="payrollSOCSO">RM 0.00</span>
                     </div>
                     <div class="payroll-item">
@@ -514,7 +508,7 @@
                 </div>
 
                 <div class="info-box">
-                    <strong>ℹ️ Note:</strong> Wage ceiling for EPF, SOCSO, EIS is RM 6,000 (effective Oct 2024). PCB is an estimate based on your income and reliefs.
+                    <strong>ℹ️ Note:</strong> SOCSO uses official contribution table (not percentage). EIS is 0.2%. Wage ceiling for all is RM 6,000 (effective Oct 2024). PCB calculated using monthly progressive tax rates.
                 </div>
             </div>
         </div>
@@ -534,7 +528,7 @@
             </div>
 
             <div class="result-row">
-                <span class="result-label">Total Tax Deductions:</span>
+                <span class="result-label">Total Tax Deductions (Selected):</span>
                 <span class="result-value" id="resultTotalDeductions">RM 0.00</span>
             </div>
 
@@ -564,10 +558,10 @@
             </div>
         </div>
 
-        <!-- Tax Deduction Guidance -->
+        <!-- Tax Deduction Selection -->
         <div class="card">
-            <h2>💡 Tax Deduction Guidance</h2>
-            <p style="color: #666; margin-bottom: 20px;">Learn what you can deduct to reduce your taxable income. All amounts are for YA 2025.</p>
+            <h2>✅ Select Your Tax Deductions</h2>
+            <p style="color: #666; margin-bottom: 20px;">Check the deductions you have and enter the amounts. These will be included in your tax calculation.</p>
 
             <div class="tax-deduction-guide">
                 <!-- Insurance & Retirement -->
@@ -577,29 +571,29 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="collapsible-content">
-                        <div class="deduction-item">
-                            <span>Life Insurance Premiums</span>
-                            <span class="deduction-limit">Max: RM 3,000</span>
+                        <div class="checkbox-group">
+                            <input type="checkbox" class="deduction-checkbox" data-max="3000" onchange="calculateAll()">
+                            <label class="checkbox-label">Life Insurance Premiums (Max: RM 3,000)</label>
+                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="3000" onchange="calculateAll()">
                         </div>
-                        <div class="deduction-example">✓ Life insurance policy for yourself or spouse</div>
 
-                        <div class="deduction-item" style="margin-top: 10px;">
-                            <span>Education/Medical Insurance</span>
-                            <span class="deduction-limit">Max: RM 4,000</span>
+                        <div class="checkbox-group">
+                            <input type="checkbox" class="deduction-checkbox" data-max="4000" onchange="calculateAll()">
+                            <label class="checkbox-label">Education/Medical Insurance (Max: RM 4,000)</label>
+                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="4000" onchange="calculateAll()">
                         </div>
-                        <div class="deduction-example">✓ Insurance for children's education or medical coverage</div>
 
-                        <div class="deduction-item" style="margin-top: 10px;">
-                            <span>Private Retirement Scheme (PRS)</span>
-                            <span class="deduction-limit">Max: RM 3,000</span>
+                        <div class="checkbox-group">
+                            <input type="checkbox" class="deduction-checkbox" data-max="3000" onchange="calculateAll()">
+                            <label class="checkbox-label">Private Retirement Scheme (Max: RM 3,000)</label>
+                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="3000" onchange="calculateAll()">
                         </div>
-                        <div class="deduction-example">✓ Contributions to approved PRS providers</div>
 
-                        <div class="deduction-item" style="margin-top: 10px;">
-                            <span>Additional EPF Contribution</span>
-                            <span class="deduction-limit">Max: RM 4,000</span>
+                        <div class="checkbox-group">
+                            <input type="checkbox" class="deduction-checkbox" data-max="4000" onchange="calculateAll()">
+                            <label class="checkbox-label">Additional EPF Contribution (Max: RM 4,000)</label>
+                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="4000" onchange="calculateAll()">
                         </div>
-                        <div class="deduction-example">✓ Voluntary EPF contributions beyond the mandatory 11%</div>
                     </div>
                 </div>
 
@@ -610,41 +604,41 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="collapsible-content">
-                        <div class="deduction-item">
-                            <span>Education Fees (Self)</span>
-                            <span class="deduction-limit">Max: RM 7,000</span>
+                        <div class="checkbox-group">
+                            <input type="checkbox" class="deduction-checkbox" data-max="7000" onchange="calculateAll()">
+                            <label class="checkbox-label">Education Fees (Max: RM 7,000)</label>
+                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="7000" onchange="calculateAll()">
                         </div>
-                        <div class="deduction-example">✓ University, college, or professional certification courses</div>
 
-                        <div class="deduction-item" style="margin-top: 10px;">
-                            <span>Laptop/PC Purchase</span>
-                            <span class="deduction-limit">Max: RM 2,500 (Lifestyle)</span>
+                        <div class="checkbox-group">
+                            <input type="checkbox" class="deduction-checkbox" data-max="2500" onchange="calculateAll()">
+                            <label class="checkbox-label">Laptop/PC Purchase (Max: RM 2,500)</label>
+                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="2500" onchange="calculateAll()">
                         </div>
-                        <div class="deduction-example">✓ Personal computer or laptop for work/education</div>
 
-                        <div class="deduction-item" style="margin-top: 10px;">
-                            <span>Smartphone Purchase</span>
-                            <span class="deduction-limit">Max: RM 2,500 (Lifestyle)</span>
+                        <div class="checkbox-group">
+                            <input type="checkbox" class="deduction-checkbox" data-max="2500" onchange="calculateAll()">
+                            <label class="checkbox-label">Smartphone Purchase (Max: RM 2,500)</label>
+                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="2500" onchange="calculateAll()">
                         </div>
-                        <div class="deduction-example">✓ Mobile phone for work or communication</div>
 
-                        <div class="deduction-item" style="margin-top: 10px;">
-                            <span>Internet Subscription</span>
-                            <span class="deduction-limit">Max: RM 2,500 (Lifestyle)</span>
+                        <div class="checkbox-group">
+                            <input type="checkbox" class="deduction-checkbox" data-max="2500" onchange="calculateAll()">
+                            <label class="checkbox-label">Internet Subscription (Max: RM 2,500)</label>
+                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="2500" onchange="calculateAll()">
                         </div>
-                        <div class="deduction-example">✓ Home internet, mobile data, or broadband subscription</div>
 
-                        <div class="deduction-item" style="margin-top: 10px;">
-                            <span>Books & Publications</span>
-                            <span class="deduction-limit">Max: RM 2,500 (Lifestyle)</span>
+                        <div class="checkbox-group">
+                            <input type="checkbox" class="deduction-checkbox" data-max="2500" onchange="calculateAll()">
+                            <label class="checkbox-label">Books & Publications (Max: RM 2,500)</label>
+                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="2500" onchange="calculateAll()">
                         </div>
-                        <div class="deduction-example">✓ Physical or digital books, journals, magazines, e-newspapers</div>
 
-                        <div class="deduction-item" style="margin-top: 10px;">
-                            <span>Online Courses & Training</span>
-                            <span class="deduction-limit">Max: RM 2,500 (Lifestyle)</span>
+                        <div class="checkbox-group">
+                            <input type="checkbox" class="deduction-checkbox" data-max="2500" onchange="calculateAll()">
+                            <label class="checkbox-label">Online Courses & Training (Max: RM 2,500)</label>
+                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="2500" onchange="calculateAll()">
                         </div>
-                        <div class="deduction-example">✓ Udemy, Coursera, LinkedIn Learning, or other skill courses</div>
                     </div>
                 </div>
 
@@ -655,35 +649,23 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="collapsible-content">
-                        <div class="deduction-item">
-                            <span>Medical Treatment & Dental</span>
-                            <span class="deduction-limit">Max: RM 10,000</span>
+                        <div class="checkbox-group">
+                            <input type="checkbox" class="deduction-checkbox" data-max="10000" onchange="calculateAll()">
+                            <label class="checkbox-label">Medical Treatment & Dental (Max: RM 10,000)</label>
+                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="10000" onchange="calculateAll()">
                         </div>
-                        <div class="deduction-example">✓ Doctor visits, surgery, dental work, medical procedures</div>
 
-                        <div class="deduction-item" style="margin-top: 10px;">
-                            <span>Medical Examination & Screening</span>
-                            <span class="deduction-limit">Max: RM 10,000</span>
+                        <div class="checkbox-group">
+                            <input type="checkbox" class="deduction-checkbox" data-max="8000" onchange="calculateAll()">
+                            <label class="checkbox-label">Parents' Medical Expenses (Max: RM 8,000)</label>
+                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="8000" onchange="calculateAll()">
                         </div>
-                        <div class="deduction-example">✓ Health screening, blood tests, vaccination (up to RM 1,000)</div>
 
-                        <div class="deduction-item" style="margin-top: 10px;">
-                            <span>Mental Health Consultation</span>
-                            <span class="deduction-limit">Max: RM 10,000</span>
+                        <div class="checkbox-group">
+                            <input type="checkbox" class="deduction-checkbox" data-max="1000" onchange="calculateAll()">
+                            <label class="checkbox-label">Gym Membership & Sports (Max: RM 1,000)</label>
+                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="1000" onchange="calculateAll()">
                         </div>
-                        <div class="deduction-example">✓ Psychologist or counselor fees</div>
-
-                        <div class="deduction-item" style="margin-top: 10px;">
-                            <span>Parents' Medical Expenses</span>
-                            <span class="deduction-limit">Max: RM 8,000</span>
-                        </div>
-                        <div class="deduction-example">✓ Medical treatment for parents (separate limit)</div>
-
-                        <div class="deduction-item" style="margin-top: 10px;">
-                            <span>Gym Membership & Sports</span>
-                            <span class="deduction-limit">Max: RM 1,000</span>
-                        </div>
-                        <div class="deduction-example">✓ Gym membership, sports training, sports equipment</div>
                     </div>
                 </div>
 
@@ -694,23 +676,17 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="collapsible-content">
-                        <div class="deduction-item">
-                            <span>Childcare & Kindergarten Fees</span>
-                            <span class="deduction-limit">Max: RM 3,000</span>
+                        <div class="checkbox-group">
+                            <input type="checkbox" class="deduction-checkbox" data-max="3000" onchange="calculateAll()">
+                            <label class="checkbox-label">Childcare & Kindergarten Fees (Max: RM 3,000)</label>
+                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="3000" onchange="calculateAll()">
                         </div>
-                        <div class="deduction-example">✓ Daycare, kindergarten, or childcare centre fees (children below 6 years)</div>
 
-                        <div class="deduction-item" style="margin-top: 10px;">
-                            <span>Child Education Savings (SSPN)</span>
-                            <span class="deduction-limit">Max: RM 8,000</span>
+                        <div class="checkbox-group">
+                            <input type="checkbox" class="deduction-checkbox" data-max="8000" onchange="calculateAll()">
+                            <label class="checkbox-label">Child Education Savings - SSPN (Max: RM 8,000)</label>
+                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="8000" onchange="calculateAll()">
                         </div>
-                        <div class="deduction-example">✓ National Education Savings Scheme contributions (YA 2025-2027)</div>
-
-                        <div class="deduction-item" style="margin-top: 10px;">
-                            <span>Breastfeeding Equipment</span>
-                            <span class="deduction-limit">Max: RM 1,000</span>
-                        </div>
-                        <div class="deduction-example">✓ Breast pump, sterilizer, or related equipment (women only, once every 2 years)</div>
                     </div>
                 </div>
 
@@ -721,61 +697,16 @@
                         <span class="arrow">▼</span>
                     </div>
                     <div class="collapsible-content">
-                        <div class="deduction-item">
-                            <span>Housing Loan Interest</span>
-                            <span class="deduction-limit">Max: RM 7,000 (First 3 years)</span>
-                        </div>
-                        <div class="deduction-example">✓ Interest on residential property loan (first 3 years only)</div>
-
-                        <div class="deduction-item" style="margin-top: 10px;">
-                            <span>EV Charging Facilities</span>
-                            <span class="deduction-limit">Max: RM 2,500</span>
-                        </div>
-                        <div class="deduction-example">✓ Installation, rental, or subscription for EV charging (YA 2023-2027)</div>
-
-                        <div class="deduction-item" style="margin-top: 10px;">
-                            <span>Food Waste Composting Machine</span>
-                            <span class="deduction-limit">Max: RM 2,500</span>
-                        </div>
-                        <div class="deduction-example">✓ Home composting equipment (from YA 2025)</div>
-                    </div>
-                </div>
-
-                <!-- Personal Reliefs -->
-                <div class="collapsible-section">
-                    <div class="collapsible-header" onclick="toggleCollapsible(this)">
-                        <span>👤 Personal Reliefs (Base Deductions)</span>
-                        <span class="arrow">▼</span>
-                    </div>
-                    <div class="collapsible-content">
-                        <div class="deduction-item">
-                            <span>Self Relief</span>
-                            <span class="deduction-limit">RM 9,000</span>
+                        <div class="checkbox-group">
+                            <input type="checkbox" class="deduction-checkbox" data-max="7000" onchange="calculateAll()">
+                            <label class="checkbox-label">Housing Loan Interest (Max: RM 7,000)</label>
+                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="7000" onchange="calculateAll()">
                         </div>
 
-                        <div class="deduction-item" style="margin-top: 10px;">
-                            <span>Spouse Relief (Joint Assessment)</span>
-                            <span class="deduction-limit">RM 4,000</span>
-                        </div>
-
-                        <div class="deduction-item" style="margin-top: 10px;">
-                            <span>Child Relief (Below 18 years)</span>
-                            <span class="deduction-limit">RM 2,000 per child</span>
-                        </div>
-
-                        <div class="deduction-item" style="margin-top: 10px;">
-                            <span>Child Relief (Over 18, in Full-time Education)</span>
-                            <span class="deduction-limit">RM 2,000 - RM 8,000 per child</span>
-                        </div>
-
-                        <div class="deduction-item" style="margin-top: 10px;">
-                            <span>Disabled Self (Additional)</span>
-                            <span class="deduction-limit">RM 7,000</span>
-                        </div>
-
-                        <div class="deduction-item" style="margin-top: 10px;">
-                            <span>Disabled Child</span>
-                            <span class="deduction-limit">RM 8,000 per child</span>
+                        <div class="checkbox-group">
+                            <input type="checkbox" class="deduction-checkbox" data-max="2500" onchange="calculateAll()">
+                            <label class="checkbox-label">EV Charging Facilities (Max: RM 2,500)</label>
+                            <input type="number" class="checkbox-amount" placeholder="Amount" min="0" max="2500" onchange="calculateAll()">
                         </div>
                     </div>
                 </div>
@@ -786,12 +717,37 @@
             </div>
 
             <div class="warning-box">
-                <strong>⚠️ Disclaimer:</strong> This calculator is for estimation purposes only. It is based on Malaysia Tax Act regulations for YA 2025. For accurate tax calculations, please consult with a tax professional or refer to official LHDN guidelines.
+                <strong>⚠️ Disclaimer:</strong> This calculator is for estimation purposes only. It is based on Malaysia Tax Act regulations for YA 2025 and LHDN guidelines. For accurate tax calculations, please consult with a tax professional or refer to official LHDN guidelines.
             </div>
         </div>
     </div>
 
     <script>
+        // SOCSO Contribution Table (Employee contribution for First Category - Below 60)
+        const socsoTable = {
+            30: 0.10, 50: 0.20, 70: 0.30, 100: 0.40, 140: 0.60, 200: 0.85, 300: 1.25, 400: 1.75,
+            500: 2.25, 600: 2.75, 700: 3.25, 800: 3.75, 900: 4.25, 1000: 4.75, 1100: 5.25, 1200: 5.75,
+            1300: 6.25, 1400: 6.75, 1500: 7.25, 1600: 7.75, 1700: 8.25, 1800: 8.75, 1900: 9.25, 2000: 9.75,
+            2100: 10.25, 2200: 10.75, 2300: 11.25, 2400: 11.75, 2500: 12.25, 2600: 12.75, 2700: 13.25,
+            2800: 13.75, 2900: 14.25, 3000: 14.75, 3100: 15.25, 3200: 15.75, 3300: 16.25, 3400: 16.75,
+            3500: 17.25, 3600: 17.75, 3700: 18.25, 3800: 18.75, 3900: 19.25, 4000: 19.75, 4100: 20.25,
+            4200: 20.75, 4300: 21.25, 4400: 21.75, 4500: 22.25, 4600: 22.75, 4700: 23.25, 4800: 23.75,
+            4900: 24.25, 5000: 24.75, 5100: 25.25, 5200: 25.75, 5300: 26.25, 5400: 26.75, 5500: 27.25,
+            5600: 27.75, 5700: 28.25, 5800: 28.75, 5900: 29.25, 6000: 29.75
+        };
+
+        function getSocsoContribution(salary) {
+            const wageCeiling = 6000;
+            const adjustedSalary = Math.min(salary, wageCeiling);
+            
+            for (let [threshold, contribution] of Object.entries(socsoTable).sort((a, b) => a[0] - b[0])) {
+                if (adjustedSalary <= parseInt(threshold)) {
+                    return contribution;
+                }
+            }
+            return 29.75; // Max contribution for RM6000+
+        }
+
         // Toggle collapsible sections
         function toggleCollapsible(header) {
             header.classList.toggle('active');
@@ -806,33 +762,51 @@
             document.getElementById('pcbSection').style.display = this.checked ? 'block' : 'none';
         });
 
-        // Malaysia Tax Brackets for YA 2024 & 2025 (Same)
-        const taxBrackets = [
-            { min: 0, max: 5000, rate: 0 },
-            { min: 5001, max: 20000, rate: 0.01 },
-            { min: 20001, max: 35000, rate: 0.03 },
-            { min: 35001, max: 50000, rate: 0.06 },
-            { min: 50001, max: 70000, rate: 0.11 },
-            { min: 70001, max: 100000, rate: 0.19 },
-            { min: 100001, max: 400000, rate: 0.25 },
-            { min: 400001, max: 600000, rate: 0.26 },
-            { min: 600001, max: 2000000, rate: 0.28 },
-            { min: 2000001, max: Infinity, rate: 0.30 }
+        // Malaysia Tax Brackets (Monthly for PCB calculation)
+        const monthlyTaxBrackets = [
+            { min: 0, max: 417, rate: 0 },
+            { min: 417, max: 1667, rate: 0.01 },
+            { min: 1667, max: 2917, rate: 0.03 },
+            { min: 2917, max: 4167, rate: 0.06 },
+            { min: 4167, max: 5833, rate: 0.11 },
+            { min: 5833, max: 8333, rate: 0.19 },
+            { min: 8333, max: 33333, rate: 0.25 },
+            { min: 33333, max: 50000, rate: 0.26 },
+            { min: 50000, max: 166667, rate: 0.28 },
+            { min: 166667, max: Infinity, rate: 0.30 }
         ];
 
-        function calculateTax(chargeableIncome) {
+        function calculateMonthlyTax(monthlyChargeableIncome) {
             let tax = 0;
-            for (let bracket of taxBrackets) {
-                if (chargeableIncome > bracket.min) {
-                    const taxableInThisBracket = Math.min(chargeableIncome, bracket.max) - bracket.min;
+            for (let bracket of monthlyTaxBrackets) {
+                if (monthlyChargeableIncome > bracket.min) {
+                    const taxableInThisBracket = Math.min(monthlyChargeableIncome, bracket.max) - bracket.min;
                     tax += taxableInThisBracket * bracket.rate;
                 }
             }
             return tax;
         }
 
+        function calculateAnnualTax(annualChargeableIncome) {
+            return calculateMonthlyTax(annualChargeableIncome / 12) * 12;
+        }
+
         function formatCurrency(amount) {
             return 'RM ' + amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        function getTotalSelectedDeductions() {
+            let total = 0;
+            const checkboxes = document.querySelectorAll('.deduction-checkbox');
+            checkboxes.forEach((checkbox, index) => {
+                if (checkbox.checked) {
+                    const amountInput = checkbox.parentElement.querySelector('.checkbox-amount');
+                    const amount = parseFloat(amountInput.value) || 0;
+                    const max = parseFloat(checkbox.dataset.max) || 0;
+                    total += Math.min(amount, max);
+                }
+            });
+            return total;
         }
 
         function calculateAll() {
@@ -849,33 +823,34 @@
             const monthlyWageForDeductions = Math.min(monthlyGross, wageCeiling);
 
             const monthlyEPF = monthlyWageForDeductions * 0.11;
-            const monthlySocso = monthlyWageForDeductions * 0.005;
+            const monthlySocso = getSocsoContribution(monthlyGross);
             const monthlyEIS = monthlyWageForDeductions * 0.002;
 
             const annualEPF = monthlyEPF * 12;
             const annualSocso = monthlySocso * 12;
             const annualEIS = monthlyEIS * 12;
 
-            // Estimate monthly PCB (simplified)
-            const estimatedMonthlyPCB = calculateTax(monthlyGross) / 12;
+            // Calculate PCB using monthly progressive tax rates
+            const monthlyRelief = 9000 / 12; // Self relief
+            const monthlyChargeableIncome = Math.max(0, monthlyGross - monthlyRelief);
+            const estimatedMonthlyPCB = calculateMonthlyTax(monthlyChargeableIncome);
             const estimatedAnnualPCB = estimatedMonthlyPCB * 12;
 
-            // Calculate total deductions
-            const totalPayrollDeductions = annualEPF + annualSocso + annualEIS;
+            // Get selected tax deductions
+            const selectedDeductions = getTotalSelectedDeductions();
 
             // Personal Reliefs (Base)
             const selfRelief = 9000;
             const totalPersonalReliefs = selfRelief;
 
-            // For simplicity, we'll use the personal reliefs only
-            // In a full version, you'd add all the tax deductions from the form
-            const totalTaxDeductions = 0; // User would fill this in
+            // Total deductions
+            const totalTaxDeductions = selectedDeductions;
 
             // Chargeable Income
             const chargeableIncome = Math.max(0, annualGross - totalPersonalReliefs - totalTaxDeductions);
 
-            // Calculate income tax
-            const incomeTax = calculateTax(chargeableIncome);
+            // Calculate income tax using annual brackets
+            const incomeTax = calculateAnnualTax(chargeableIncome);
 
             // Final tax payable
             const pcbCredit = hasPCB ? annualPCB : estimatedAnnualPCB;
@@ -913,6 +888,14 @@
             document.getElementById('annualPCB').value = '';
             document.getElementById('hasPCB').checked = false;
             document.getElementById('pcbSection').style.display = 'none';
+
+            // Reset all deduction checkboxes and amounts
+            document.querySelectorAll('.deduction-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            document.querySelectorAll('.checkbox-amount').forEach(input => {
+                input.value = '';
+            });
 
             // Clear results
             document.getElementById('resultGrossIncome').textContent = 'RM 0.00';
